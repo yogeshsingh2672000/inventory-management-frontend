@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-// import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  let navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,14 +17,20 @@ function Login() {
       }),
     });
     const json = await response.json();
-    // localStorage.setItem("authToken", json.authToken);
-    console.log(json.authToken);
+    if (json.success === true) {
+      localStorage.setItem("authToken", json.authToken);
+      navigate("/");
+    } else {
+      alert("Please use correct Credentials");
+    }
+    // console.log(json.authToken);
+    // console.log(json);
     // return response.json();
   };
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
-    console.log(credentials);
+    // console.log(credentials);
   };
   return (
     <div className="container my-5">
